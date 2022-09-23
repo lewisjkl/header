@@ -1,7 +1,10 @@
-package mill_header
+package header
 
 sealed abstract class HeaderLicense extends Product with Serializable {
   def text: String
+
+  def renderComment: String =
+    text.split("\n").mkString("/* ", "\n * ", "\n */")
 }
 object HeaderLicense {
 

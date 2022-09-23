@@ -1,4 +1,4 @@
-package mill_header
+package header
 
 /** Arguments passed into Runner
   *

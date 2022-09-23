@@ -26,18 +26,17 @@ trait BaseScalaModule
   def segmentsName = millModuleSegments.parts.mkString("-")
 
   def artifactName = {
-    s"mill-header-$segmentsName"
+    s"header-$segmentsName"
   }
 
   def publishVersion = VcsVersion.vcsState().format().dropWhile(_ == "v")
 
   def pomSettings = PomSettings(
-    description = "Mill Header Automation & Linting",
+    description = "Header Automation & Linting",
     organization = "com.lewisjkl",
-    url = "https://github.com/lewisjkl/mill-header",
+    url = "https://github.com/lewisjkl/header",
     licenses = Seq(License.`Apache-2.0`),
-    versionControl =
-      VersionControl(Some("https://github.com/lewisjkl/mill-header")),
+    versionControl = VersionControl(Some("https://github.com/lewisjkl/header")),
     developers =
       Seq(Developer(id = "lewisjkl", name = "Jeff Lewis", url = "lewisjkl.com"))
   )

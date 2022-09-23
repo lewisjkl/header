@@ -1,4 +1,4 @@
-package mill_header
+package header
 
 object Runner {
 
@@ -13,7 +13,8 @@ object Runner {
       .filter(os.isFile)
       .flatMap { path =>
         val contents = os.read(path)
-        if (contents.startsWith(args.license.text)) List.empty else List(path)
+        if (contents.startsWith(args.license.renderComment)) List.empty
+        else List(path)
       }
       .toList
   }
@@ -29,9 +30,9 @@ object Runner {
       .filter(os.isFile)
       .flatMap { path =>
         val contents = os.read(path)
-        if (contents.startsWith(args.license.text)) List.empty
+        if (contents.startsWith(args.license.renderComment)) List.empty
         else {
-          os.write.over(path, s"${args.license.text}\n\n$contents")
+          os.write.over(path, s"${args.license.renderComment}\n\n$contents")
           List(path)
         }
       }
