@@ -59,4 +59,7 @@ object core extends BaseScalaModule {
 object `mill-plugin` extends BaseScalaModule {
   def ivyDeps = Dependencies.mill
   def moduleDeps = List(core)
+
+  override def artifactSuffix: T[String] =
+    s"_mill0.10_${artifactScalaVersion()}"
 }
