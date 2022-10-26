@@ -1,8 +1,11 @@
 import $ivy.`com.lihaoyi::mill-contrib-bloop:`
-import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
+import $ivy.`io.chris-kipp::mill-ci-release::0.1.1`
 import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.0`
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.1`
+import de.tobiasroeser.mill.integrationtest._
 import io.github.davidgregory084.TpolecatModule
-import de.tobiasroeser.mill.vcs.version.VcsVersion
+import io.kipp.mill.ci.release.CiReleaseModule
+import mill.scalalib.scalafmt.ScalafmtModule
 import mill._
 import mill.modules.Jvm
 import mill.scalalib._
@@ -19,7 +22,8 @@ trait BaseScalaModule
     extends TpolecatModule
     with BaseModule
     with mill.scalalib.bsp.ScalaMetalsSupport
-    with PublishModule {
+    with ScalafmtModule
+    with CiReleaseModule {
   def scalaVersion = T.input("2.13.8")
   def semanticDbVersion = T.input("4.4.34")
 
@@ -28,8 +32,6 @@ trait BaseScalaModule
   def artifactName = {
     s"header-$segmentsName"
   }
-
-  def publishVersion = VcsVersion.vcsState().format().dropWhile(_ == "v")
 
   def pomSettings = PomSettings(
     description = "Header Automation & Linting",
@@ -62,4 +64,9 @@ object `mill-plugin` extends BaseScalaModule {
 
   override def artifactSuffix: T[String] =
     s"_mill0.10_${artifactScalaVersion()}"
+
+  object itest extends MillIntegrationTestModule {
+    def millTestVersion = "0.10.7"
+    def pluginsUnderTest = Seq(`mill-plugin`)
+  }
 }

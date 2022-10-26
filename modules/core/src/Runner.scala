@@ -8,13 +8,13 @@ object Runner {
     * @return
     *   list of paths that are missing headers or contain the incorrect headers
     */
-  def check(args: HeaderArgs): List[os.Path] = {
+  def check(args: HeaderArgs): List[os.RelPath] = {
     os.walk(args.startPath, args.skip)
       .filter(os.isFile)
       .flatMap { path =>
         val contents = os.read(path)
         if (contents.startsWith(args.license.renderComment)) List.empty
-        else List(path)
+        else List(path.relativeTo(args.startPath))
       }
       .toList
   }
@@ -25,7 +25,7 @@ object Runner {
     * @return
     *   list of paths where headers were added
     */
-  def create(args: HeaderArgs): List[os.Path] = {
+  def create(args: HeaderArgs): List[os.RelPath] = {
     os.walk(args.startPath, args.skip)
       .filter(os.isFile)
       .flatMap { path =>
@@ -33,7 +33,7 @@ object Runner {
         if (contents.startsWith(args.license.renderComment)) List.empty
         else {
           os.write.over(path, s"${args.license.renderComment}\n\n$contents")
-          List(path)
+          List(path.relativeTo(args.startPath))
         }
       }
       .toList

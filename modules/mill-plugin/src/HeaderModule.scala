@@ -5,6 +5,8 @@ import mill.define.Command
 
 trait HeaderModule extends mill.Module {
 
+  import ReadersWriters._
+
   def headerRootPath: os.Path = this.millSourcePath
 
   def includeFileExtensions: List[String] = List("scala")
@@ -19,7 +21,7 @@ trait HeaderModule extends mill.Module {
 
   def args: HeaderArgs = HeaderArgs(license, headerRootPath, skipFilePredicate)
 
-  def headerCheck(): Command[List[os.Path]] = T.command {
+  def headerCheck(): Command[List[os.RelPath]] = T.command {
     val result = Runner.check(args)
 
     if (result.nonEmpty) {
@@ -37,7 +39,7 @@ trait HeaderModule extends mill.Module {
     }
   }
 
-  def headerCreate(): Command[List[os.Path]] = T.command {
+  def headerCreate(): Command[List[os.RelPath]] = T.command {
     val result = Runner.create(args)
 
     if (result.nonEmpty) {
@@ -54,4 +56,20 @@ trait HeaderModule extends mill.Module {
     mill.api.Result.Success(result)
   }
 
+}
+
+object ReadersWriters {
+  private def readRelPath(s: String): os.RelPath = {
+    if (s.startsWith("/")) sys.error(s"$s is not a relative path")
+    else {
+      val segments = s.split('/').dropWhile(_ == ".").map {
+        case ".."  => sys.error(s"$s should not contain \"..\" segments")
+        case other => os.rel / other
+      }
+      os.rel / segments
+    }
+  }
+
+  implicit val relPathRW: upickle.default.ReadWriter[os.RelPath] =
+    upickle.default.readwriter[String].bimap(_.toString, readRelPath(_))
 }
