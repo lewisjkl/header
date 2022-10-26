@@ -4,7 +4,16 @@ sealed abstract class HeaderLicense extends Product with Serializable {
   def text: String
 
   def renderComment: String =
-    text.split("\n").mkString("/* ", "\n * ", "\n */")
+    text
+      .split("\n")
+      .map { line =>
+        if (line.replaceAll("\n", "").nonEmpty) {
+          s" $line"
+        } else {
+          line
+        }
+      }
+      .mkString("/*", "\n *", "\n */")
 }
 object HeaderLicense {
 
