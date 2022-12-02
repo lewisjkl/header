@@ -8,6 +8,10 @@ object sut extends HeaderModule {
   def license: HeaderLicense = HeaderLicense.Apache2("2022", "lewisjkl")
 }
 
+object nodir extends HeaderModule {
+  def license: HeaderLicense = HeaderLicense.Apache2("2022", "lewisjkl")
+}
+
 final case class FlatFile(path: os.Path, contents: String)
 
 def flatFiles(p: os.Path): IndexedSeq[FlatFile] = {
@@ -62,5 +66,6 @@ def verify(): Command[Unit] = T.command {
     )
   checkFlatFiles()
   sut.headerCheck()() // now should be fine
+  nodir.headerCheck()()
   ()
 }
