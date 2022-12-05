@@ -8,6 +8,10 @@ object sut extends HeaderModule {
   def license: HeaderLicense = HeaderLicense.Apache2("2022", "lewisjkl")
 }
 
+object nodir extends HeaderModule {
+  def license: HeaderLicense = HeaderLicense.Apache2("2022", "lewisjkl")
+}
+
 final case class FlatFile(path: os.Path, contents: String)
 
 def flatFiles(p: os.Path): IndexedSeq[FlatFile] = {
@@ -56,11 +60,12 @@ def verify(): Command[Unit] = T.command {
     os.rel / "nested" / "noHeader.scala"
   )
   val createResult = sut.headerCreate()()
-  if (createResult != expectedFailedPaths)
+  if (createResult.sorted != expectedFailedPaths)
     sys.error(
       s"Expected createResult '$expectedFailedPaths' but was '${createResult}'"
     )
   checkFlatFiles()
   sut.headerCheck()() // now should be fine
+  nodir.headerCheck()()
   ()
 }

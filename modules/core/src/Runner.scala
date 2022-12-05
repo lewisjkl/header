@@ -9,7 +9,7 @@ object Runner {
     *   list of paths that are missing headers or contain the incorrect headers
     */
   def check(args: HeaderArgs): List[os.RelPath] = {
-    os.walk(args.startPath, args.skip)
+    walkIfExists(args.startPath, args.skip)
       .filter(os.isFile)
       .flatMap { path =>
         val contents = os.read(path)
@@ -26,7 +26,7 @@ object Runner {
     *   list of paths where headers were added
     */
   def create(args: HeaderArgs): List[os.RelPath] = {
-    os.walk(args.startPath, args.skip)
+    walkIfExists(args.startPath, args.skip)
       .filter(os.isFile)
       .flatMap { path =>
         val contents = os.read(path)
@@ -37,5 +37,10 @@ object Runner {
         }
       }
       .toList
+  }
+
+  private def walkIfExists(path: os.Path, skip: os.Path => Boolean) = {
+    if (os.exists(path)) os.walk(path, skip)
+    else IndexedSeq.empty
   }
 }
