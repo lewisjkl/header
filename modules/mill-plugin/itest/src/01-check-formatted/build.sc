@@ -60,7 +60,7 @@ def verify(): Command[Unit] = T.command {
     os.rel / "nested" / "noHeader.scala"
   )
   val createResult = sut.headerCreate()()
-  if (createResult != expectedFailedPaths)
+  if (createResult.sorted != expectedFailedPaths)
     sys.error(
       s"Expected createResult '$expectedFailedPaths' but was '${createResult}'"
     )
