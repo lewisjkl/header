@@ -1,4 +1,4 @@
-import $exec.plugins
+import $file.plugins
 
 import mill._
 import mill.define.Command
@@ -12,7 +12,7 @@ object nodir extends HeaderModule {
   def license: HeaderLicense = HeaderLicense.Apache2("2022", "lewisjkl")
 }
 
-final case class FlatFile(path: os.Path, contents: String)
+case class FlatFile(path: os.Path, contents: String)
 
 def flatFiles(p: os.Path): IndexedSeq[FlatFile] = {
   os.walk(p)

@@ -1,7 +1,7 @@
 import $ivy.`com.lihaoyi::mill-contrib-bloop:`
-import $ivy.`io.chris-kipp::mill-ci-release::0.1.1`
-import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.0`
-import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.1`
+import $ivy.`io.chris-kipp::mill-ci-release::0.1.9`
+import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.5`
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.1`
 import de.tobiasroeser.mill.integrationtest._
 import io.github.davidgregory084.TpolecatModule
 import io.kipp.mill.ci.release.CiReleaseModule
@@ -21,11 +21,9 @@ trait BaseModule extends Module {
 trait BaseScalaModule
     extends TpolecatModule
     with BaseModule
-    with mill.scalalib.bsp.ScalaMetalsSupport
     with ScalafmtModule
     with CiReleaseModule {
   def scalaVersion = T.input("2.13.8")
-  def semanticDbVersion = T.input("4.4.34")
 
   def segmentsName = millModuleSegments.parts.mkString("-")
 
@@ -47,8 +45,8 @@ trait BaseScalaModule
 object Dependencies {
   val osLib = ivy"com.lihaoyi::os-lib:0.8.1"
   val mill = Agg(
-    ivy"com.lihaoyi::mill-main:0.10.4",
-    ivy"com.lihaoyi::mill-main-api:0.10.4"
+    ivy"com.lihaoyi::mill-main:0.11.1",
+    ivy"com.lihaoyi::mill-main-api:0.11.1"
   )
 }
 
@@ -63,10 +61,10 @@ object `mill-plugin` extends BaseScalaModule {
   def moduleDeps = List(core)
 
   override def artifactSuffix: T[String] =
-    s"_mill0.10_${artifactScalaVersion()}"
+    s"_mill0.11_${artifactScalaVersion()}"
 
   object itest extends MillIntegrationTestModule {
-    def millTestVersion = "0.10.7"
+    def millTestVersion = "0.11.1"
     def pluginsUnderTest = Seq(`mill-plugin`)
   }
 }
