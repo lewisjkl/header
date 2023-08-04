@@ -3,6 +3,7 @@ import mill.scalalib._
 import mill.modules.Jvm
 import os.Path
 
+// adapted from https://github.com/atooni/mill-mdoc
 trait MDocModule extends ScalaModule {
 
   def scalaMdocVersion: T[String] = T("2.3.7")
