@@ -1,7 +1,7 @@
 import $file.plugins.MDocModule
 import MDocModule.{MDocModule => MDoc}
 import $ivy.`com.lihaoyi::mill-contrib-bloop:`
-import $ivy.`io.chris-kipp::mill-ci-release::0.1.9`
+import $ivy.`io.chris-kipp::mill-ci-release::0.1.10`
 import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.5`
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.1`
 import de.tobiasroeser.mill.integrationtest._
@@ -25,7 +25,7 @@ trait BaseScalaModule
     with BaseModule
     with ScalafmtModule
     with CiReleaseModule {
-  def scalaVersion = T.input("2.13.8")
+  def scalaVersion = T.input("2.13.15")
 
   def segmentsName = millModuleSegments.parts.mkString("-")
 
@@ -42,13 +42,20 @@ trait BaseScalaModule
     developers =
       Seq(Developer(id = "lewisjkl", name = "Jeff Lewis", url = "lewisjkl.com"))
   )
+
+  // Copied from lefou's plugins to keep compatible with older java versions
+  override def javacOptions = {
+    (if (scala.util.Properties.isJavaAtLeast(9)) Seq("--release", "8")
+     else Seq("-source", "1.8", "-target", "1.8")) ++
+      Seq("-encoding", "UTF-8", "-deprecation")
+  }
 }
 
 object Dependencies {
-  val osLib = ivy"com.lihaoyi::os-lib:0.8.1"
+  val osLib = ivy"com.lihaoyi::os-lib:0.11.3"
   val mill = Agg(
-    ivy"com.lihaoyi::mill-main:0.11.1",
-    ivy"com.lihaoyi::mill-main-api:0.11.1"
+    ivy"com.lihaoyi::mill-main:0.11.13",
+    ivy"com.lihaoyi::mill-main-api:0.11.13"
   )
 }
 
@@ -66,7 +73,7 @@ object `mill-plugin` extends BaseScalaModule {
     s"_mill0.11_${artifactScalaVersion()}"
 
   object itest extends MillIntegrationTestModule {
-    def millTestVersion = "0.11.1"
+    def millTestVersion = "0.11.13"
     def pluginsUnderTest = Seq(`mill-plugin`)
   }
 }
