@@ -20,13 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current branch (full)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
-            distribution: adopt
-            java-version: 11
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Get mill version
         run: echo "MILL_VERSION=$(cat .mill-version)" >> $GITHUB_ENV
