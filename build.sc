@@ -25,7 +25,7 @@ trait BaseScalaModule
     with BaseModule
     with ScalafmtModule
     with CiReleaseModule {
-  def scalaVersion = T.input("2.13.15")
+  def scalaVersion = T.input("2.13.16")
 
   def segmentsName = millModuleSegments.parts.mkString("-")
 
