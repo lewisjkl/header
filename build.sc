@@ -1,7 +1,7 @@
 import $file.plugins.MDocModule
 import MDocModule.{MDocModule => MDoc}
 import $ivy.`com.lihaoyi::mill-contrib-bloop:`
-import $ivy.`io.chris-kipp::mill-ci-release::0.2.1`
+import $ivy.`io.chris-kipp::mill-ci-release::0.3.0`
 import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.5`
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.1`
 import de.tobiasroeser.mill.integrationtest._
