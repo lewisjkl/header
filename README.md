@@ -14,7 +14,7 @@ A big thanks to [sbt-header](https://github.com/sbt/sbt-header) which this proje
 In `build.sc` file:
 
 ```scala
-import $ivy.`com.lewisjkl::header-mill-plugin::0.0.3`
+import $ivy.`com.lewisjkl::header-mill-plugin::0.0.4`
 import header._
 ```
 
