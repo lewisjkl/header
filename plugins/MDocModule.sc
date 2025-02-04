@@ -6,7 +6,7 @@ import os.Path
 // adapted from https://github.com/atooni/mill-mdoc
 trait MDocModule extends ScalaModule {
 
-  def scalaMdocVersion: T[String] = T("2.6.2")
+  def scalaMdocVersion: T[String] = T("2.6.3")
 
   def scalaMdocDep: T[Dep] = T(ivy"org.scalameta::mdoc:${scalaMdocVersion()}")
 
