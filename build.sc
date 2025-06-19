@@ -3,7 +3,7 @@ import MDocModule.{MDocModule => MDoc}
 import $ivy.`com.lihaoyi::mill-contrib-bloop:`
 import $ivy.`io.chris-kipp::mill-ci-release::0.3.0`
 import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.5`
-import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.1`
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.3`
 import de.tobiasroeser.mill.integrationtest._
 import io.github.davidgregory084.TpolecatModule
 import io.kipp.mill.ci.release.CiReleaseModule
