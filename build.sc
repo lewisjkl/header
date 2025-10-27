@@ -52,7 +52,7 @@ trait BaseScalaModule
 }
 
 object Dependencies {
-  val osLib = ivy"com.lihaoyi::os-lib:0.11.3"
+  val osLib = ivy"com.lihaoyi::os-lib:0.11.6"
   val mill = Agg(
     ivy"com.lihaoyi::mill-main:0.11.13",
     ivy"com.lihaoyi::mill-main-api:0.11.13"
