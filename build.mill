@@ -4,13 +4,13 @@ import mill._, scalalib._, publish._
 
 val millVersion = "1.0.6"
 
-trait BaseScalaModule extends ScalaModule with PublishModule {
+trait BaseScalaModule extends ScalaModule with PublishModule with mill.util.VcsVersion {
   def scalaVersion = "3.7.4"
   def jvmVersion = "11"
 
   def artifactName = s"header-${super.artifactName()}"
 
-  def publishVersion = "0.0.1"
+  def publishVersion = vcsState().format()
 
   def pomSettings = PomSettings(
     description = "Header Automation & Linting",
