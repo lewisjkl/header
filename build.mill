@@ -1,0 +1,38 @@
+package build
+
+import mill._, scalalib._, scalafmt._, publish._
+
+val millVersion = "1.1.2"
+
+trait BaseScalaModule extends ScalaModule with PublishModule with ScalafmtModule with mill.util.VcsVersion {
+  def scalaVersion = "3.8.2"
+  def jvmVersion = "17"
+
+  def artifactName = s"header-${super.artifactName()}"
+
+  def publishVersion = vcsState().format()
+
+  def pomSettings = PomSettings(
+    description = "Header Automation & Linting",
+    organization = "com.lewisjkl",
+    url = "https://github.com/lewisjkl/header",
+    licenses = Seq(License.`Apache-2.0`),
+    versionControl = VersionControl(Some("https://github.com/lewisjkl/header")),
+    developers =
+      Seq(Developer("lewisjkl", "Jeff Lewis", "https://lewisjkl.com"))
+  )
+}
+
+object core extends BaseScalaModule {
+  def mvnDeps = Seq(mvn"com.lihaoyi::os-lib:0.11.3")
+}
+
+object `mill-plugin` extends BaseScalaModule {
+  def mvnDeps = Seq(mvn"com.lihaoyi::mill-libs:${millVersion}")
+  def moduleDeps = Seq(core)
+  def platformSuffix = s"_mill1"
+
+  object test extends ScalaTests with TestModule.Utest {
+    def mvnDeps = Seq(mvn"com.lihaoyi::mill-testkit:${millVersion}")
+  }
+}
