@@ -18,14 +18,6 @@ import $ivy.`com.lewisjkl::header-mill-plugin::0.0.4`
 import header._
 ```
 
-<!--
-// Need this so mdoc thinks we are inside of a proper mill context
-// but put this in a comment so it won't show up on GitHub
-```scala mdoc:invisible
-implicit def ctx: mill.define.Ctx = ???
-```
--->
-
 #### Apache 2
 
 ```scala mdoc:nest

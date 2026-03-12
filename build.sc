@@ -1,5 +1,3 @@
-import $file.plugins.MDocModule
-import MDocModule.{MDocModule => MDoc}
 import $ivy.`com.lihaoyi::mill-contrib-bloop:`
 import $ivy.`io.chris-kipp::mill-ci-release::0.3.0`
 import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.5`
@@ -9,7 +7,6 @@ import io.github.davidgregory084.TpolecatModule
 import io.kipp.mill.ci.release.CiReleaseModule
 import mill.scalalib.scalafmt.ScalafmtModule
 import mill._
-import mill.modules.Jvm
 import mill.scalalib._
 import mill.scalalib.publish._
 
@@ -68,9 +65,4 @@ object `mill-plugin` extends BaseScalaModule {
     def millTestVersion = "0.11.13"
     def pluginsUnderTest = Seq(`mill-plugin`)
   }
-}
-
-object readme extends BaseScalaModule with MDoc {
-  override def mdocSources = T.sources { T.workspace / "README.md" }
-  override def moduleDeps = List(`mill-plugin`, core)
 }
