@@ -1,13 +1,10 @@
 package header
 
 import mill._
-import mill.define.Command
 
 trait HeaderModule extends mill.Module {
 
-  import ReadersWriters._
-
-  def headerRootPath: os.Path = this.millSourcePath
+  def headerRootPath: os.Path = this.moduleDir
 
   def includeFileExtensions: List[String] = List("scala")
 
@@ -21,7 +18,7 @@ trait HeaderModule extends mill.Module {
 
   def args: HeaderArgs = HeaderArgs(license, headerRootPath, skipFilePredicate)
 
-  def headerCheck(): Command[List[os.RelPath]] = T.command {
+  def headerCheck(): Command[List[os.RelPath]] = Task.Command {
     val result = Runner.check(args)
 
     if (result.nonEmpty) {
@@ -31,15 +28,15 @@ trait HeaderModule extends mill.Module {
                               "\n    ",
                               ""
                             )}""".stripMargin)
-      mill.api.Result
-        .Failure("Missing or incorrect headers found in files", Some(result))
+      mill.api.daemon.Result
+        .Failure("Missing or incorrect headers found in files")
     } else {
       System.out.println("All headers up to date.")
-      mill.api.Result.Success(List.empty)
+      mill.api.daemon.Result.Success(List.empty[os.RelPath])
     }
   }
 
-  def headerCreate(): Command[List[os.RelPath]] = T.command {
+  def headerCreate(): Command[List[os.RelPath]] = Task.Command {
     val result = Runner.create(args)
 
     if (result.nonEmpty) {
@@ -53,23 +50,7 @@ trait HeaderModule extends mill.Module {
       System.err.println("All headers up to date.")
     }
 
-    mill.api.Result.Success(result)
+    mill.api.daemon.Result.Success(result)
   }
 
-}
-
-object ReadersWriters {
-  private def readRelPath(s: String): os.RelPath = {
-    if (s.startsWith("/")) sys.error(s"$s is not a relative path")
-    else {
-      val segments = s.split('/').dropWhile(_ == ".").map {
-        case ".."  => sys.error(s"$s should not contain \"..\" segments")
-        case other => os.rel / other
-      }
-      os.rel / segments
-    }
-  }
-
-  implicit val relPathRW: upickle.default.ReadWriter[os.RelPath] =
-    upickle.default.readwriter[String].bimap(_.toString, readRelPath(_))
 }
