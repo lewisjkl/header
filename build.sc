@@ -13,16 +13,8 @@ import mill.modules.Jvm
 import mill.scalalib._
 import mill.scalalib.publish._
 
-trait BaseModule extends Module {
-  def millSourcePath: os.Path = {
-    val originalRelativePath = super.millSourcePath.relativeTo(os.pwd)
-    os.pwd / "modules" / originalRelativePath
-  }
-}
-
 trait BaseScalaModule
     extends TpolecatModule
-    with BaseModule
     with ScalafmtModule
     with CiReleaseModule {
   def scalaVersion = T.input("2.13.16")
