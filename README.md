@@ -7,22 +7,20 @@ A big thanks to [sbt-header](https://github.com/sbt/sbt-header) which this proje
 ## Mill - Basic Usage
 
 ```console
-> mill __.headerCheck
+> .mill __.headerCheck
 > mill __.headerCreate
 ```
 
 In `build.sc` file:
 
 ```scala
-import $ivy.`com.lewisjkl::header-mill-plugin::0.0.4`
+//| mvnDeps: ["com.lewisjkl::header-mill-plugin::0.1.0"] 
 import header._
 ```
 
 #### Apache 2
 
-```scala mdoc:nest
-import header._
-
+```scala
 object core extends HeaderModule {
   override def license: HeaderLicense = HeaderLicense.Apache2("2023", "lewisjkl")
 }
@@ -30,9 +28,7 @@ object core extends HeaderModule {
 
 #### MIT
 
-```scala mdoc:nest
-import header._
-
+```scala
 object core extends HeaderModule {
   override def license: HeaderLicense = HeaderLicense.MIT("2023", "lewisjkl")
 }
@@ -40,9 +36,7 @@ object core extends HeaderModule {
 
 #### Custom
 
-```scala mdoc:nest
-import header._
-
+```scala
 object core extends HeaderModule {
   override def license: HeaderLicense = HeaderLicense.Custom(
   """|The contents of this file is free and unencumbered software released into the
@@ -53,7 +47,7 @@ object core extends HeaderModule {
 
 ## Mill Customization
 
-```scala mdoc:nest
+```scala
 import header._
 
 object core extends HeaderModule {
@@ -70,8 +64,8 @@ object core extends HeaderModule {
     )
   }
 
-  // defaults to this.millSourcePath, change this to change where the header checking/creation starts
+  // defaults to this.moduleDir, change this to change where the header checking/creation starts
   // looking for files
-  override def headerRootPath: os.Path = millSourcePath
+  override def headerRootPath: os.Path = this.moduleDir
 }
 ```
