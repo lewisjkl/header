@@ -2,9 +2,13 @@ package build
 
 import mill._, scalalib._, scalafmt._, publish._
 
-val millVersion = "1.1.2"
+val millVersion = "1.1.10"
 
-trait BaseScalaModule extends ScalaModule with PublishModule with ScalafmtModule with mill.util.VcsVersion {
+trait BaseScalaModule
+    extends ScalaModule
+    with PublishModule
+    with ScalafmtModule
+    with mill.util.VcsVersion {
   def scalaVersion = "3.8.2"
   def jvmVersion = "17"
 
